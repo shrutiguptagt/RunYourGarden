@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, RunYourGardenActivity!</string>
+    <string name="app_name">RunYourGarden</string>
+    <string name="strAppTitle">Run Your Garden</string>
+    <string name="strEmpty"/>
+    <string name="strWelcome">Welcome </string>
+    <string name="strSessionStart">A new workout has been started</string>
+    <string name="strBtnSessionStart">Start Workout</string>
+    <string name="strBtnSessionStop">Stop</string>
+    <string name="Exit">Exit</string>
+
+</resources>

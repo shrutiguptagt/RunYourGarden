@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+   <TextView
+      android:id="@+id/currentSpeed"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentTop="true"
+      android:layout_centerHorizontal="true"
+      android:layout_marginTop="10dp"
+      android:textColor="#ff000000"
+      android:textSize="12pt" />
+   <Button
+      android:id="@+id/sessionBtn"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:onClick="handleSessionChange"
+      android:background="@android:color/transparent"
+      android:text="@+string/strBtnSessionStart"
+      android:textColor="#ff000000"
+      android:layout_centerHorizontal="true"
+      android:textSize="18pt"
+      android:textStyle="bold"
+    />
+</merge>
