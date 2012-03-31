@@ -66,7 +66,7 @@ public class SessionServlet extends HttpServlet {
             if (!results.isEmpty()) {
                 for (Session e : results) {
                     System.out.println("size " + e.getCoordinates().size());
-                    if (e.getCoordinates().size() < 2) { // Session lasts less than 30 seconds
+                    if (e.getCoordinates().size() < 1) { 
                         // need also update UserProfile SessionKeySet
                         Query query1 = pm.newQuery(UserProfile.class);
                         query1.setFilter("userId == uidParam");

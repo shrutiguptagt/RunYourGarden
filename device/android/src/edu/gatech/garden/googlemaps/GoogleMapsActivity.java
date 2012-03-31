@@ -1,5 +1,7 @@
 package edu.gatech.garden.googlemaps;
 
+import java.util.ArrayList;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,7 +31,31 @@ import edu.gatech.garden.home.HomeActivity;
 
 public class GoogleMapsActivity extends MapActivity {
 
+    public class Coordinate {
+        public double latitude;
+        public double longitude;
+        public double altitude;
+        public float speed;
+        public long timestamp;
+
+        Coordinate(double latitude, double longitude, double altitude,
+                long timestamp, float speed) {
+            this.latitude = latitude;
+            this.longitude = longitude;
+            this.altitude = altitude;
+            this.timestamp = timestamp;
+            this.speed = speed;
+        }
+    }
+
+    public static double latitude;
+    public static double longitude;
+    public static double altitude;
+    public static long timestamp;
+    public static float speed;
+    public static double accDistance;
     public static TextView tvCurrentSpeed = null;
+    public static TextView debugText = null;
     public static Button sessionBtn = null;
 
     public static MapController mapController;
@@ -37,16 +63,16 @@ public class GoogleMapsActivity extends MapActivity {
     public static LocationManager locationManager;
     public static MyOverlays itemizedoverlay;
     public static MyLocationOverlay myLocationOverlay;
-    public static double latitude = 0.0;
-    public static double longitude = 0.0;
-    public static double altitude = 0.0;
-    public static float speed = 0.0f;
+
+    // TODO: synchronization
+    public static ArrayList<Coordinate> coordinates = null;
+
     public static long startTime = 0;
     public static long currentTime = 0;
     public static boolean isSessionRunning = false;
-    public final static long SLEEP_INTERVAL = 2000;
+    public final static long SLEEP_INTERVAL = 5000;
     public static String locationProvider = null;
-    private SessionTask sessionTask = null;
+    private static SessionTask sessionTask = null;
     private static GeoUpdateHandler geoUpdateHandler;
     public static String sessionid = null;
 
@@ -72,6 +98,8 @@ public class GoogleMapsActivity extends MapActivity {
         mapView.getOverlays().add(myLocationOverlay);
 
         sessionBtn = (Button) findViewById(R.id.sessionBtn);
+
+        debugText = (TextView) findViewById(R.id.debug);
 
         myLocationOverlay.runOnFirstFix(new Runnable() {
             @Override
@@ -99,10 +127,11 @@ public class GoogleMapsActivity extends MapActivity {
             longitude = location.getLongitude();
             altitude = location.getAltitude();
             speed = location.getSpeed();
+            timestamp = location.getTime();
             GeoPoint point = new GeoPoint((int) (latitude * 1E6),
                     (int) (longitude * 1E6));
             // createMarker();
-            mapController.animateTo(point); // mapController.setCenter(point);
+            mapController.animateTo(point);
         }
 
         @Override
@@ -135,6 +164,9 @@ public class GoogleMapsActivity extends MapActivity {
             myLocationOverlay.enableCompass();
             locationManager.requestLocationUpdates(locationProvider, 0, 0,
                     new GeoUpdateHandler());
+            sessionBtn.setText(R.string.strBtnSessionStart);
+        } else {
+            sessionBtn.setText(R.string.strBtnSessionStop);
         }
     }
 
@@ -151,11 +183,19 @@ public class GoogleMapsActivity extends MapActivity {
     public void handleSessionChange(View view) {
         isSessionRunning = !isSessionRunning;
         if (isSessionRunning) {
+            coordinates = new ArrayList<Coordinate>();
+            Coordinate initCoord = new Coordinate(latitude, longitude,
+                    altitude, timestamp, speed);
+            coordinates.add(initCoord);
+            accDistance = 0.0;
             Bundle bundle = new Bundle();
             bundle.putString("user_id", HomeActivity.userid);
             bundle.putString("session_state", "start");
+            bundle.putString("gps_update", formalizeGpsUpdate(initCoord));
+
             String resp = Communicator.communicate(bundle,
                     Communicator.SESSION_URL);
+            // debugText.setText(resp);
             try {
                 JSONObject json = new JSONObject(resp);
                 sessionid = json.getString("session_id");
@@ -163,6 +203,7 @@ public class GoogleMapsActivity extends MapActivity {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
+            Toast.makeText(this, sessionid, Toast.LENGTH_LONG).show();
 
             sessionTask = new SessionTask();
             sessionTask.execute();
@@ -180,17 +221,24 @@ public class GoogleMapsActivity extends MapActivity {
         protected Void doInBackground(Void... params) {
             try {
                 while (true) {
-                    String gpsUpdate = System.currentTimeMillis() + ";"
-                            + latitude + ";" + longitude + ";" + altitude;
+                    if (coordinates == null) {
+                        throw new Exception();
+                    }
+                    Coordinate coord = new Coordinate(latitude, longitude,
+                            altitude, timestamp, speed);
+                    coordinates.add(coord);
+                    int index = coordinates.size() - 1;
+                    accDistance += convertGpsToMeters(coordinates.get(index),
+                            coordinates.get(index - 1));
+                    String gpsUpdate = formalizeGpsUpdate(coord);
                     Bundle bundle = new Bundle();
                     bundle.putString("user_id", HomeActivity.userid);
                     bundle.putString("session_id", sessionid);
                     bundle.putString("session_state", "ongoing");
-                    bundle.putString("gps_update", "" + speed);
+                    bundle.putString("gps_update", gpsUpdate);
 
                     Communicator.communicate(bundle, Communicator.SESSION_URL);
-
-                    publishProgress(gpsUpdate);
+                    publishProgress(gpsUpdate + ";" + accDistance);
 
                     Thread.sleep(SLEEP_INTERVAL);
                 }
@@ -212,8 +260,25 @@ public class GoogleMapsActivity extends MapActivity {
         protected void onProgressUpdate(String... updates) {
             if (updates != null && updates.length > 0) {
                 tvCurrentSpeed.setText(updates[0]);
+                Toast.makeText(GoogleMapsActivity.this, updates[0],
+                        Toast.LENGTH_SHORT).show();
+
             }
         }
     }
 
+    public static double convertGpsToMeters(Coordinate from, Coordinate to) {
+        double dlon, dlat, a, c;
+        dlon = to.longitude - from.longitude;
+        dlat = to.latitude - to.latitude;
+        a = Math.pow(Math.sin(dlat / 2), 2) + Math.cos(from.latitude)
+                * Math.cos(to.latitude) * Math.pow(Math.sin(dlon / 2), 2);
+        c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return 6378140 * c; /* 6378140 is the radius of the Earth in meters */
+    }
+
+    public static String formalizeGpsUpdate(Coordinate coord) {
+        return coord.timestamp + ";" + coord.latitude + ";" + coord.longitude
+                + ";" + coord.altitude + ";" + coord.speed;
+    }
 }

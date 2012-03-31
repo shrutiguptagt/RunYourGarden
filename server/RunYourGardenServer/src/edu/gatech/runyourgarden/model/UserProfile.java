@@ -39,8 +39,20 @@ public class UserProfile {
     @Persistent
     private long remainTime;
     
+    @Persistent
+    private ArrayList<String> weightList;
+    
+    @Persistent
+    private ArrayList<String> heightList;
+    
+    @Persistent
+    private int age;
+    
     @Persistent(mappedBy = "user")
     private ArrayList<Session> sessionsSet;
+    
+    @Persistent
+    private ArrayList<String> bodyWeight;
 
     public UserProfile(String userId) {
         this.setUserId(userId);
@@ -118,4 +130,45 @@ public class UserProfile {
     public void setSessionsSet(ArrayList<Session> sessionsSet) {
         this.sessionsSet = sessionsSet;
     }
+
+    public ArrayList<String> getBodyWeight() {
+        return bodyWeight;
+    }
+
+    public void setBodyWeight(ArrayList<String> bodyWeight) {
+        this.bodyWeight = bodyWeight;
+    }
+
+    public ArrayList<String> getWeightList() {
+        return weightList;
+    }
+
+    public void setWeightList(ArrayList<String> weightList) {
+        this.weightList = weightList;
+    }
+    
+    public static float getWeightValue(String str) {
+        return Float.parseFloat(str.split(";")[1]);
+    }
+    
+    public static long getWeightTimeStamp(String str) {
+        return Long.parseLong(str.split(";")[0]);        
+    }
+
+    public ArrayList<String> getHeightList() {
+        return heightList;
+    }
+
+    public void setHeightList(ArrayList<String> heightList) {
+        this.heightList = heightList;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+    
 }

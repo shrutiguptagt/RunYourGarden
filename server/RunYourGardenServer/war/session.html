@@ -1,0 +1,38 @@
+<html>
+<body>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>   
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.js"></script>   
+
+<script>
+
+$.ajax({
+    url: "http://localhost:8888/session",
+    type: "POST",
+    data: {"user_id": "1848848618", "session_state": "start", "gps_update": "1232;131;11;132"},
+    success: function(data) {
+        var obj = jQuery.parseJSON(data);
+        var sessionid = obj.session_id;
+        $('debug').html(data);
+        $.ajax({
+            url: "http://localhost:8888/session",
+            type: "POST",
+            data: {"user_id": "1848848618", "session_id": sessionid, "session_state": "ongoing", "gps_update": "1237687872;131;11;132"},
+            success: function(data) {
+                $('debug').html(data);
+                $.ajax({
+                    url: "http://localhost:8888/session",
+                    type: "POST",
+                    data: {"user_id": "1848848618", "session_id": sessionid, "session_state": "stop", "gps_update": "123231322;1323231;11;132"},
+                    success: function(data) {
+                        $('debug').html(data);
+                    }
+                });
+            }
+        });
+    }
+});
+
+</script>
+<div id='debug'>test</div>
+</body>
+</html>

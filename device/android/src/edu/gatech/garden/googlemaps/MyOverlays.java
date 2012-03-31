@@ -1,7 +1,5 @@
 package edu.gatech.garden.googlemaps;
 
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
@@ -54,20 +52,17 @@ public class MyOverlays extends ItemizedOverlay<OverlayItem> {
     }
 
     /*
-    protected boolean onTap(int index) {
-        OverlayItem overlayItem = overlays[index];
-        Builder builder = new AlertDialog.Builder(context);
-        builder.setMessage("This will end the activity");
-        builder.setCancelable(true);
-        builder.setPositiveButton("I agree", new OkOnClickListener());
-        builder.setNegativeButton("No, no", new CancelOnClickListener());
-        AlertDialog dialog = builder.create();
-        dialog.show();
-        return true;
-    };
+     * protected boolean onTap(int index) { OverlayItem overlayItem =
+     * overlays[index]; Builder builder = new AlertDialog.Builder(context);
+     * builder.setMessage("This will end the activity");
+     * builder.setCancelable(true); builder.setPositiveButton("I agree", new
+     * OkOnClickListener()); builder.setNegativeButton("No, no", new
+     * CancelOnClickListener()); AlertDialog dialog = builder.create();
+     * dialog.show(); return true; };
      */
     private final class CancelOnClickListener implements
             DialogInterface.OnClickListener {
+        @Override
         public void onClick(DialogInterface dialog, int which) {
             Toast.makeText(context, "You clicked yes", Toast.LENGTH_LONG)
                     .show();
@@ -76,6 +71,7 @@ public class MyOverlays extends ItemizedOverlay<OverlayItem> {
 
     private final class OkOnClickListener implements
             DialogInterface.OnClickListener {
+        @Override
         public void onClick(DialogInterface dialog, int which) {
             Toast.makeText(context, "You clicked no", Toast.LENGTH_LONG).show();
         }

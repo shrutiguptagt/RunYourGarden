@@ -10,5 +10,7 @@
     <string name="strBtnSessionStart">Start Workout</string>
     <string name="strBtnSessionStop">Stop</string>
     <string name="Exit">Exit</string>
+    <string name="strSetupGoal">Setup Goal</string>
+    <string name="desc">Welcome To Run Your Garden!</string>
 
 </resources>
