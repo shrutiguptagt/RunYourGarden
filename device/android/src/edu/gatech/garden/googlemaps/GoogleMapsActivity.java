@@ -262,7 +262,6 @@ public class GoogleMapsActivity extends MapActivity {
                 tvCurrentSpeed.setText(updates[0]);
                 Toast.makeText(GoogleMapsActivity.this, updates[0],
                         Toast.LENGTH_SHORT).show();
-
             }
         }
     }

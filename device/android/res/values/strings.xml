@@ -12,5 +12,6 @@
     <string name="Exit">Exit</string>
     <string name="strSetupGoal">Setup Goal</string>
     <string name="desc">Welcome To Run Your Garden!</string>
+    <string name="checkout">Check Out</string>
 
 </resources>

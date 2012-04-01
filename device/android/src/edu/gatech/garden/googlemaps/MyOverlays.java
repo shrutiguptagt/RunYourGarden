@@ -51,15 +51,6 @@ public class MyOverlays extends ItemizedOverlay<OverlayItem> {
         this.previousoverlay = overlay;
     }
 
-    /*
-     * protected boolean onTap(int index) { OverlayItem overlayItem =
-     * overlays[index]; Builder builder = new AlertDialog.Builder(context);
-     * builder.setMessage("This will end the activity");
-     * builder.setCancelable(true); builder.setPositiveButton("I agree", new
-     * OkOnClickListener()); builder.setNegativeButton("No, no", new
-     * CancelOnClickListener()); AlertDialog dialog = builder.create();
-     * dialog.show(); return true; };
-     */
     private final class CancelOnClickListener implements
             DialogInterface.OnClickListener {
         @Override

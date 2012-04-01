@@ -2,30 +2,34 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
-
+    android:orientation="vertical"
+    android:background="@drawable/backgound_home"
+>
+    <Button
+        android:id="@+id/setupGoal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="handleCheckout"
+        android:text="@+string/checkout" />
+    
     <TextView
-        android:id="@+id/username"
+        android:id="@+id/summary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/strEmpty"
+        android:gravity="right"
+        android:textColor="#994400"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <GridView xmlns:android="http://schemas.android.com/apk/res/android" 
 	    android:id="@+id/gridview"
 	    android:layout_width="fill_parent" 
-	    android:layout_height="fill_parent"
+	    android:layout_height="wrap_content"
 	    android:numColumns="3"
 	    android:verticalSpacing="10dp"
 	    android:horizontalSpacing="10dp"
 	    android:stretchMode="columnWidth"
 	    android:gravity="center"
 	/>
-    
-    <Button
-        android:id="@+id/setupGoal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@+string/strBtnSessionStart" />
 
 </LinearLayout>

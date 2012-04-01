@@ -1,23 +1,28 @@
 package edu.gatech.garden.home;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
+import edu.gatech.garden.Garden;
+import edu.gatech.garden.Garden.Plant;
 import edu.gatech.garden.R;
 
 public class GardenAdapter extends BaseAdapter {
     private Context mContext;
+    private LayoutInflater layoutInflater;
 
     public GardenAdapter(Context c) {
         mContext = c;
+        layoutInflater = LayoutInflater.from(c);
     }
 
     @Override
     public int getCount() {
-        return mThumbIds.length;
+        return Garden.mThumbIds.length;
     }
 
     @Override
@@ -33,24 +38,22 @@ public class GardenAdapter extends BaseAdapter {
     // create a new ImageView for each item referenced by the Adapter
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ImageView imageView;
-        if (convertView == null) { // if it's not recycled, initialize some
-                                   // attributes
-            imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setPadding(8, 8, 8, 8);
+        View grid;
+        if (convertView == null) {
+            grid = new View(mContext);
+            grid = layoutInflater.inflate(R.layout.grid_item, null);
         } else {
-            imageView = (ImageView) convertView;
+            grid = convertView;
         }
 
-        imageView.setImageResource(mThumbIds[position]);
-        return imageView;
-    }
+        Plant plant = Garden.plantsList.get(position);
+        ImageView imageView = (ImageView) grid.findViewById(R.id.plantImage);
+        imageView.setImageResource(plant.drawableId);
+        TextView calorieTv = (TextView) grid.findViewById(R.id.calorieText);
+        calorieTv.setText(plant.calorie + " cal");
+        TextView amountTv = (TextView) grid.findViewById(R.id.amountText);
+        amountTv.setText("Tot: " + plant.amount);
 
-    // references to our images
-    private Integer[] mThumbIds = { R.drawable.sample_1, R.drawable.sample_2,
-            R.drawable.sample_3, R.drawable.sample_4, R.drawable.sample_5,
-            R.drawable.sample_6, R.drawable.sample_7, R.drawable.sample_8,
-            R.drawable.sample_9, R.drawable.sample_10 };
+        return grid;
+    }
 }

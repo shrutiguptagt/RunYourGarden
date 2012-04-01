@@ -17,15 +17,16 @@
       android:layout_centerHorizontal="true"
       android:layout_marginTop="100dp"
       android:textColor="#ff000000"
+      android:layout_alignParentRight="true"
       android:textSize="12pt" />
    <Button
       android:id="@+id/sessionBtn"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:onClick="handleSessionChange"
-      android:background="@android:color/transparent"
       android:text="@+string/desc"
       android:textColor="#ff000000"
+      android:color="#66FF0000" 
       android:layout_centerHorizontal="true"
       android:textSize="18pt"
       android:textStyle="bold"
