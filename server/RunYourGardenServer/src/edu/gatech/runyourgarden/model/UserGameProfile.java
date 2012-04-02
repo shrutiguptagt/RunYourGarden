@@ -1,5 +1,8 @@
 package edu.gatech.runyourgarden.model;
 
-public class UserGameProfile {
+import java.util.ArrayList;
 
+public class UserGameProfile {
+    private ArrayList<Plant> inventory;
+    private ArrayList<Block> garden;
 }

@@ -14,6 +14,16 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	</servlet-mapping>
 
     <servlet>
+        <servlet-name>ListPlants</servlet-name>
+        <servlet-class>edu.gatech.runyourgarden.server.ListPlantServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ListPlants</servlet-name>
+        <url-pattern>/listplants</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
         <servlet-name>login</servlet-name>
         <servlet-class>edu.gatech.runyourgarden.server.LoginServlet</servlet-class>
     </servlet>
