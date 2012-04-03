@@ -1,9 +1,21 @@
 package edu.gatech.runyourgarden.model;
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
 
+@PersistenceCapable
 public class Plant {
+    @PrimaryKey
+    @Persistent
     private int plantId;
+    
+    @Persistent
     private int cost;
+    
+    @Persistent
     private String imgLocation;
+    
     public int getPlantId() {
         return plantId;
     }
